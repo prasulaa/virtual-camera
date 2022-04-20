@@ -20,4 +20,12 @@ public class Triangle<K extends Point> {
     public Triangle(List<K> points) {
         this.points = points;
     }
+
+    public List<K> getPoints() {
+        return points;
+    }
+
+    public void setPoints(List<K> points) {
+        this.points = points;
+    }
 }

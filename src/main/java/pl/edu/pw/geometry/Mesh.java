@@ -1,8 +1,11 @@
 package pl.edu.pw.geometry;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Mesh {
+
+    public static List<Mesh> meshes = new ArrayList<>();
 
     private List<Triangle<Point3D>> triangles;
 
@@ -20,4 +23,5 @@ public class Mesh {
     public void setTriangles(List<Triangle<Point3D>> triangles) {
         this.triangles = triangles;
     }
+
 }
