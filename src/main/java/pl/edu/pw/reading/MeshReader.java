@@ -10,7 +10,7 @@ import java.util.*;
 
 public class MeshReader {
 
-    public static Mesh readFile(File file) throws FileNotFoundException {
+    public Mesh readFile(File file) throws FileNotFoundException {
         Scanner scanner = new Scanner(file);
         scanner.useLocale(Locale.US);
 
@@ -24,7 +24,7 @@ public class MeshReader {
         }
     }
 
-    private static Mesh readMesh(Scanner scanner) {
+    private Mesh readMesh(Scanner scanner) {
         List<Triangle<Point3D>> triangles = new ArrayList<>();
 
         while (scanner.hasNextDouble()) {
@@ -35,7 +35,7 @@ public class MeshReader {
         return new Mesh(triangles);
     }
 
-    private static Triangle<Point3D> readTriangle(Scanner scanner) {
+    private Triangle<Point3D> readTriangle(Scanner scanner) {
         Point3D point1 = readPoint(scanner);
         Point3D point2 = readPoint(scanner);
         Point3D point3 = readPoint(scanner);
@@ -43,7 +43,7 @@ public class MeshReader {
         return new Triangle<>(point1, point2, point3);
     }
 
-    private static Point3D readPoint(Scanner scanner) {
+    private Point3D readPoint(Scanner scanner) {
         double x = scanner.nextDouble();
         double y = scanner.nextDouble();
         double z = scanner.nextDouble();
