@@ -1,5 +1,7 @@
 package pl.edu.pw.geometry;
 
+import java.util.List;
+
 public class Surface {
 
     private double A;
@@ -15,6 +17,22 @@ public class Surface {
         B = b;
         C = c;
         D = d;
+    }
+
+    public Surface(Triangle<Point3D> triangle) {
+        List<Point3D> points = triangle.getPoints();
+        Point3D p1 = points.get(0);
+        Point3D p2 = points.get(1);
+        Point3D p3 = points.get(2);
+
+        Vector3D p1p2 = new Vector3D(p1, p2);
+        Vector3D p1p3 = new Vector3D(p1, p3);
+        Vector3D product = p1p2.product(p1p3);
+
+        A = product.getX();
+        B = product.getY();
+        C = product.getZ();
+        D = -1 * (A * p1.getX() + B * p1.getY() + C * p1.getZ());
     }
 
     public double getA() {
@@ -47,13 +65,5 @@ public class Surface {
 
     public void setD(double d) {
         D = d;
-    }
-
-    public boolean isXeq0() {
-        return A != 0 && B == 0 && C == 0 && D == 0;
-    }
-
-    public boolean isYeq0() {
-        return A == 0 && B != 0 && C == 0 && D == 0;
     }
 }

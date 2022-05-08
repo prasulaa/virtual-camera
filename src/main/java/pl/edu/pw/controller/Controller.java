@@ -79,7 +79,10 @@ public class Controller {
         clearCanvas();
 
         List<Triangle<Point3D>> triangles = getAllTriangles();
-        triangles.sort(new TriangleComparator().reversed());
+        try {
+            triangles.sort(new TriangleComparator().reversed());
+        } catch (IllegalArgumentException ignored) {
+        }
         List<Triangle<Point2D>> projectedTriangles = perspectiveProjection.projection(triangles, d);
 
         for (Triangle<Point2D> triangle : projectedTriangles) {
