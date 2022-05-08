@@ -1,15 +1,23 @@
 package pl.edu.pw.controller;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
-import pl.edu.pw.geometry.*;
+import pl.edu.pw.geometry.Mesh;
+import pl.edu.pw.geometry.MeshModifier;
 import pl.edu.pw.geometry.MeshModifier.Axis;
-
-import java.util.List;
+import pl.edu.pw.geometry.PerspectiveProjection;
+import pl.edu.pw.geometry.Point2D;
+import pl.edu.pw.geometry.Point3D;
+import pl.edu.pw.geometry.Triangle;
+import pl.edu.pw.geometry.TriangleComparator;
 
 public class Controller {
 
@@ -56,7 +64,7 @@ public class Controller {
             case X -> zoom(PLANCK_SCOPE);
             default -> haveMatched = false;
         }
-        if(haveMatched) {
+        if (haveMatched) {
             repaintCanvas();
         }
     }
@@ -100,7 +108,7 @@ public class Controller {
         double[] y = new double[n];
 
         int i = 0;
-        for (Point2D point: points) {
+        for (Point2D point : points) {
             Point2D screenPoint = screenPoint(point);
             x[i] = screenPoint.getX();
             y[i] = screenPoint.getY();
@@ -111,8 +119,8 @@ public class Controller {
     }
 
     private Point2D screenPoint(Point2D point) {
-        double x = canvas.getWidth()/2 + point.getX();
-        double y = canvas.getHeight()/2 - point.getY();
+        double x = canvas.getWidth() / 2 + point.getX();
+        double y = canvas.getHeight() / 2 - point.getY();
 
         return new Point2D(x, y);
     }

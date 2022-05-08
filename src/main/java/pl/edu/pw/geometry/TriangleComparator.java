@@ -1,6 +1,5 @@
 package pl.edu.pw.geometry;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -50,7 +49,7 @@ public class TriangleComparator implements Comparator<Triangle<Point3D>> {
 
     private boolean and(List<Boolean> booleans) {
         boolean result = true;
-        for (boolean b: booleans) {
+        for (boolean b : booleans) {
             result = result && b;
         }
         return result;
@@ -58,7 +57,7 @@ public class TriangleComparator implements Comparator<Triangle<Point3D>> {
 
     private boolean or(List<Boolean> booleans) {
         boolean result = false;
-        for (boolean b: booleans) {
+        for (boolean b : booleans) {
             result = result || b;
         }
         return result;
@@ -70,7 +69,8 @@ public class TriangleComparator implements Comparator<Triangle<Point3D>> {
         double C = surface.getC();
         double D = surface.getD();
 
-        return -1*(A*point.getX() + B*point.getY() + C*point.getZ() + D) / (A*A + B*B + C*C);
+        return -1 * (A * point.getX() + B * point.getY() + C * point.getZ() + D) / (A * A + B * B
+                                                                                        + C * C);
     }
 
     private Surface surface(Triangle<Point3D> t1) {
@@ -86,7 +86,7 @@ public class TriangleComparator implements Comparator<Triangle<Point3D>> {
         double A = product.getX();
         double B = product.getY();
         double C = product.getZ();
-        double D = -1*(A*p1.getX() + B*p1.getY() + C*p1.getZ());
+        double D = -1 * (A * p1.getX() + B * p1.getY() + C * p1.getZ());
 
         return new Surface(A, B, C, D);
     }
