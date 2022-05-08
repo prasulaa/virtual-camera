@@ -5,7 +5,7 @@ import java.util.List;
 
 public class TriangleComparator implements Comparator<Triangle<Point3D>> {
 
-    private final double err = 1e-5;
+    private final double err = 0.0000000001;
 
     @Override
     public int compare(Triangle<Point3D> t1, Triangle<Point3D> t2) {
@@ -20,31 +20,57 @@ public class TriangleComparator implements Comparator<Triangle<Point3D>> {
 
     private int compareTriangles(Triangle<Point3D> t1, Triangle<Point3D> t2) {
         Surface surfaceT1 = surface(t1);
-        List<Boolean> ifZ0Closer = new ArrayList<>();
+        //List<Boolean> ifZ0Closer = new ArrayList<>();
 
         if (surfaceT1.isXeq0() || surfaceT1.isYeq0()) {
-            return -1;
+            return -1; // 1
         }
 
-        for (Point3D pointT2: t2.getPoints()) {
-            double t0 = t0(surfaceT1, pointT2);
-            double z = pointT2.getZ();
-            double z0 = z + surfaceT1.getC()*t0;
+        Point3D middlePointT2 = middlePoint(t2);
 
-            if (z > z0 + err) {
-                ifZ0Closer.add(true);
-            } else if (z < z0 - err) {
-                ifZ0Closer.add(false);
-            }
-        }
+        double t0 = t0(surfaceT1, middlePointT2);
 
-        if (and(ifZ0Closer)) {
+        Point3D point0 = new Point3D(
+            middlePointT2.getX() + surfaceT1.getA() * t0,
+            middlePointT2.getY() + surfaceT1.getB() * t0,
+            middlePointT2.getZ() + surfaceT1.getC() * t0
+        );
+
+        double distance = distanceToP0(middlePointT2);
+        double distance0 = distanceToP0(point0);
+
+        if (distance > distance0 + err) {
             return -1;
-        } else if (!or(ifZ0Closer)) {
+            //ifZ0Closer.add(true);
+        } else if (distance < distance0 - err) {
             return 1;
+            //ifZ0Closer.add(false);
         } else {
             return 0;
         }
+
+//        if (ifZ0Closer.isEmpty()) {
+//            return 0;
+//        } else if (and(ifZ0Closer)) {
+//            return -1; // 1
+//        } else if (!or(ifZ0Closer)) {
+//            return 1; // -1
+//        } else {
+//            return 0;
+//        }
+    }
+
+    private Point3D middlePoint(Triangle<Point3D> triangle) {
+        double x = triangle.getPoints().stream().map(Point3D::getX).reduce(0d, Double::sum) / 3;
+        double y = triangle.getPoints().stream().map(Point3D::getY).reduce(0d, Double::sum) / 3;
+        double z = triangle.getPoints().stream().map(Point3D::getZ).reduce(0d, Double::sum) / 3;
+
+        return new Point3D(x, y, z);
+    }
+
+    private double distanceToP0(Point3D point) {
+        return Math.sqrt(
+            Math.pow(point.getX(), 2) + Math.pow(point.getY(), 2) + Math.pow(point.getZ(), 2));
     }
 
     private boolean and(List<Boolean> booleans) {

@@ -78,12 +78,19 @@ public class Controller {
     private void repaintCanvas() {
         clearCanvas();
 
-        for (Mesh mesh: meshes) {
-            List<Triangle<Point2D>> triangles = perspectiveProjection.projection(mesh.getTriangles(), d);
-            for (Triangle<Point2D> triangle: triangles) {
-               drawTriangle(triangle, canvas.getGraphicsContext2D());
-            }
+        List<Triangle<Point3D>> triangles = getAllTriangles();
+        triangles.sort(new TriangleComparator().reversed());
+        List<Triangle<Point2D>> projectedTriangles = perspectiveProjection.projection(triangles, d);
+
+        for (Triangle<Point2D> triangle : projectedTriangles) {
+            drawTriangle(triangle, canvas.getGraphicsContext2D());
         }
+    }
+
+    private List<Triangle<Point3D>> getAllTriangles() {
+        return meshes.stream()
+            .flatMap(mesh -> mesh.getTriangles().stream())
+            .collect(Collectors.toList());
     }
 
     private void clearCanvas() {
@@ -97,6 +104,8 @@ public class Controller {
         double[] y = convertedPoints.getValue();
         int n = x.length == y.length ? x.length : 3;
 
+        gc.setFill(Color.PINK);
+        gc.fillPolygon(x, y, n);
         gc.setStroke(Color.BLACK);
         gc.strokePolygon(x, y, n);
     }
